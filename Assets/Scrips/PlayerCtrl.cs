@@ -12,12 +12,13 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject GameCtrl;
     public LayerMask ground;
     public List<GameObject> BlockPrefs = new List<GameObject>();
+    public bool isGrounded = false;
+    public Rigidbody2D r2d;
+    public bool objectIsGrounded = false;
 
     bool facingRight = true;
     float moveDirection = 0;
-    public bool isGrounded = false;
     Vector3 cameraPos;
-    public Rigidbody2D r2d;
     Transform t;
     int i = 1;
     float legsPos;
@@ -56,11 +57,12 @@ public class PlayerCtrl : MonoBehaviour
             }
             else
             {
-                if (isGrounded || r2d.velocity.magnitude < 0.01f)
+                if (isGrounded || r2d.velocity.magnitude < 0.01f || objectIsGrounded)
                 {
                     //standing still
                     moveDirection = 0;
                 }
+                
             }
             // Change facing direction
             if (moveDirection != 0)
@@ -102,7 +104,7 @@ public class PlayerCtrl : MonoBehaviour
 
 
             }
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S) && isGrounded)
             {
                 crouched = true;
                 GameObject feet = this.gameObject.transform.GetChild(0).Find("Legs").gameObject;
@@ -136,7 +138,15 @@ public class PlayerCtrl : MonoBehaviour
         // Apply movement velocity
         if (r2d != null)
         {
-            r2d.velocity = new Vector2((moveDirection) * maxSpeed, r2d.velocity.y);
+            if (!objectIsGrounded)
+            {
+                r2d.velocity = new Vector2((moveDirection) * maxSpeed, r2d.velocity.y);
+            }
+            else
+            {
+                r2d.velocity = new Vector2((moveDirection) * maxSpeed/2, r2d.velocity.y);
+            }
+
         }
 
     }
