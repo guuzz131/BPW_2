@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class FallingBlock : MonoBehaviour
 {
+    public bool hitGround = false;
+
     private List<Transform> childs = new List<Transform>();
+    private Material grayMat;
 
     float xMax;
     float xMin;
@@ -47,13 +50,16 @@ public class FallingBlock : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        hitGround = true;
         stillColliding = true;
         if (collision.gameObject.layer == 9 && (collision.GetContact(0).point.y < yMax) && (collision.GetContact(0).point.x < xMax + .5f) && (collision.GetContact(0).point.x > xMin - .5f))
         {
             for (int i = 0; i < childs.Count; i++)
             {
-                childs[i].position = new Vector3(Mathf.Round(childs[i].position.x * 2f) * 0.5f, Mathf.Round(childs[i].position.y * 2f) * 0.5f, childs[i].position.z);
-                childs[i].GetComponent<SpriteRenderer>().color = Color.white / 1.5f;
+                float childX = Mathf.Round(childs[i].position.x * 2f) *0.5f;
+                float childY = Mathf.Round(childs[i].position.y * 2f) * 0.5f;
+                if (childX == Mathf.Round(childX)) childX += 0.5f;
+                childs[i].position = new Vector3(childX, childY, childs[i].position.z);
             }
             if (stillColliding)
             {

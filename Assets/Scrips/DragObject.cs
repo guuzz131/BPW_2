@@ -91,6 +91,27 @@ public class DragObject : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     private void Start()
     {
         childObject = transform.GetChild(0).GetComponent<RectTransform>();
+        
+    }
+    public void GiveNewPlayer()
+    {
+        gameObject.GetComponent<Animation>().Play();
+        Invoke("DestroyThis", .5f);
 
+    }
+    void DestroyThis()
+    {
+        
+        for (int i = 0; i < objects.Count; i++)
+        {
+            if (points[i].transform.childCount == 0)
+            {
+                GameObject child = points[i + 1].transform.GetChild(0).gameObject;
+                child.transform.SetParent(points[i].transform);
+                child.GetComponent<RectTransform>().anchoredPosition = points[i].GetComponent<RectTransform>().anchoredPosition;
+            }
+            objects[i].GetComponent<DragObject>().objects.Remove(gameObject);
+        }
+        Destroy(gameObject);
     }
 }

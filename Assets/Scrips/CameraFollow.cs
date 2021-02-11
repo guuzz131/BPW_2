@@ -5,26 +5,44 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform player;
+    public bool camHasArrived = false;
+    public bool moveCam;
 
     Transform playerObj;
-    // Start is called before the first frame update
+    bool isMoving;
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        playerObj = player.GetChild(0);
-        //transform.position = new Vector3(playerObj.position.x + 1, transform.position.y, transform.position.z); ;
+        if (player.childCount > 0)
+        {
+            playerObj = player.GetChild(0);
+        }
+
+        if (moveCam)
+        {
+            Invoke("MoveCamBack", 1f);
+        }
     }
     void FixedUpdate()
     {
-        if (playerObj != null)
+        if (playerObj != null && !moveCam)
         {
             transform.position = Vector3.Lerp(transform.position, new Vector3(playerObj.position.x, transform.position.y, transform.position.z), 0.1f);
 
+        }
+    }
+    public void MoveCamBack()
+    {
+        transform.position = Vector3.Lerp(transform.position, new Vector3(0,0,0), Time.deltaTime *2);
+        //Vector3.MoveTowards(transform.position, new Vector3(0,0,0), 10);
+        if (Vector3.Distance(transform.position, new Vector3(0, 0, 0)) < 1)
+        {
+            camHasArrived = true;
         }
     }
 }

@@ -15,6 +15,11 @@ public class PlayerCtrl : MonoBehaviour
     public bool isGrounded = false;
     public Rigidbody2D r2d;
     public bool objectIsGrounded = false;
+    public Material blueDissolveMat;
+    public Material grayDissolvedMat;
+    public bool isDissolving;
+    public float dissolve;
+    public Canvas canvas;
 
     bool facingRight = true;
     float moveDirection = 0;
@@ -23,14 +28,17 @@ public class PlayerCtrl : MonoBehaviour
     int i = 1;
     float legsPos;
     float time1;
-    float time2;
+    bool hasPlayer;
+    bool canSpawn;
     bool isPlaying1;
-    bool isPlaying2;
+
     bool crouched;
+    List<GameObject> dissolvingObjects = new List<GameObject>();
 
     // Use this for initialization
     void Start()
     {
+        Destroy(gameObject.transform.GetChild(0).gameObject);
         newBlock();
         t = transform;
 
@@ -48,7 +56,22 @@ public class PlayerCtrl : MonoBehaviour
     {
         //Debug.Log(r2d.velocity.y);
         // Movement controls
-        if (r2d != null)
+        if (isDissolving && blueDissolveMat.GetFloat("_DissolveAmount") < 1)
+        {
+            dissolve = Mathf.Clamp01(dissolve + Time.deltaTime);
+            blueDissolveMat.SetFloat("_DissolveAmount", dissolve);
+        } else if (isDissolving)
+        {
+            blueDissolveMat.SetFloat("_DissolveAmount", 0);
+            isDissolving = false;
+            dissolve = 0;
+            for (int i = 0; i < dissolvingObjects.Count; i++)
+            {
+                dissolvingObjects[i].GetComponent<SpriteRenderer>().material = grayDissolvedMat;
+            }
+            dissolvingObjects.Clear();
+        }
+        if (r2d != null && hasPlayer)
         {
             if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
             {
@@ -85,37 +108,39 @@ public class PlayerCtrl : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                GameObject newBrickBlock = Instantiate(new GameObject("Block"), this.transform.position, Quaternion.Euler(0, 0, 0), GameCtrl.transform);
-                newBrickBlock.AddComponent<Rigidbody2D>();
-                newBrickBlock.GetComponent<Rigidbody2D>().freezeRotation = true;
                 
-                newBrickBlock.AddComponent<FallingBlock>();
-                for (int i = 0; i <= 3; i++)
-                {
-                    GameObject brick = this.gameObject.transform.GetChild(0).GetChild(i).gameObject;
-                    GameObject newBrick = Instantiate(brick, brick.transform.position, Quaternion.Euler(0, 0, 0), newBrickBlock.transform);
-                    newBrick.AddComponent<BoxCollider2D>();
-                    newBrick.layer = 9;
-                    if (i == 3)
+                    GameObject newBrickBlock = Instantiate(new GameObject("Block"), this.transform.position, Quaternion.Euler(0, 0, 0), GameCtrl.transform);
+                    newBrickBlock.AddComponent<Rigidbody2D>();
+                    newBrickBlock.GetComponent<Rigidbody2D>().freezeRotation = true;
+
+                    newBrickBlock.AddComponent<FallingBlock>();
+                    for (int i = 0; i <= 3; i++)
                     {
-                        newBlock();
+                        GameObject brick = this.gameObject.transform.GetChild(0).GetChild(i).gameObject;
+                        GameObject newBrick = Instantiate(brick, brick.transform.position, Quaternion.Euler(0, 0, 0), newBrickBlock.transform);
+                        isDissolving = true;
+                        newBrick.AddComponent<BoxCollider2D>();
+                        newBrick.layer = 9;
+                        dissolvingObjects.Add(newBrick);
+                        if (i == 3)
+                        {
+                            Destroy(gameObject.transform.GetChild(0).gameObject);
+                            GameObject.Find("MainCamera").GetComponent<CameraFollow>().moveCam = true;
+                            hasPlayer = false;
+                            Invoke("timer", 1f);
+                        }
                     }
-                }
-
-
             }
             if (Input.GetKey(KeyCode.S) && isGrounded)
             {
                 crouched = true;
                 GameObject feet = this.gameObject.transform.GetChild(0).Find("Legs").gameObject;
                 legsPos = feet.transform.position.y;
-                time2 = 0;
                 if (!isPlaying1)
                 {
                     feet.GetComponent<Animation>().clip = feet.GetComponent<Animation>().GetClip("LegCrouchAni");
                     feet.GetComponent<Animation>().Play();
                     isPlaying1 = true;
-                    isPlaying2 = false;
                 }
                 
                 
@@ -124,12 +149,19 @@ public class PlayerCtrl : MonoBehaviour
             {
                 
                 GameObject feet = this.gameObject.transform.GetChild(0).Find("Legs").gameObject;
-                    feet.GetComponent<Animation>().clip = feet.GetComponent<Animation>().GetClip("LegStandFromCrouchAni");
-                    feet.GetComponent<Animation>().Play();
-                    isPlaying1 = false;
-                    i = 1;
+                feet.GetComponent<Animation>().clip = feet.GetComponent<Animation>().GetClip("LegStandFromCrouchAni");
+                feet.GetComponent<Animation>().Play();
+                isPlaying1 = false;
+                i = 1;
                 crouched = false;
             }
+        }
+        if (Input.GetKeyDown(KeyCode.E) && !hasPlayer && GameObject.Find("MainCamera").GetComponent<CameraFollow>().camHasArrived && canSpawn)
+        {
+            GameObject.Find("MainCamera").GetComponent<CameraFollow>().moveCam = false;
+            GameObject.Find("MainCamera").GetComponent<CameraFollow>().camHasArrived = false;
+            newBlock();
+            canSpawn = false;
         }
     }
         
@@ -164,13 +196,17 @@ public class PlayerCtrl : MonoBehaviour
     }
     public void newBlock()
     {
-        int i = Random.Range(0, BlockPrefs.Count);
-        Destroy(gameObject.transform.GetChild(0).gameObject);
-        GameObject newBlock = Instantiate(BlockPrefs[i], transform.position, Quaternion.Euler(0,0,0), this.gameObject.transform);
+        GameObject FirstInList = canvas.gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<DragObject>().spawnEntity;
+        canvas.gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<DragObject>().GiveNewPlayer();
+        GameObject newBlock = Instantiate(FirstInList, transform.position, Quaternion.Euler(0,0,0), this.gameObject.transform);
         r2d = newBlock.GetComponent<Rigidbody2D>();
         r2d.freezeRotation = true;
         r2d.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         r2d.gravityScale = gravityScale;
+        hasPlayer = true;
     }
-    
+    private void timer()
+    {
+        canSpawn = true;
+    }
 }
