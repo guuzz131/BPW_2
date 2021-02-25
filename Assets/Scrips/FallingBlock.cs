@@ -16,11 +16,14 @@ public class FallingBlock : MonoBehaviour
     bool stillColliding;
     private void Start()
     {
+        StartCoroutine(SetKinematic(1f));
+        
         for (int i = 0; i < transform.childCount; i++)
         {
             childs.Add(gameObject.transform.GetChild(i).transform);
             Vector3 childPos = childs[i].position;
         }
+        /*
         xMax = childs[0].position.x;
         xMin = childs[0].position.x;
         yMax = childs[0].position.y;
@@ -46,8 +49,27 @@ public class FallingBlock : MonoBehaviour
             {
                 yMin = childPosYmin;
             }
-        }
+        }*/
     }
+
+    private IEnumerator SetKinematic(float time)
+    {
+        yield return new WaitForSeconds(time);
+        DestroyRigidBody2D();
+    }
+
+    private void DestroyRigidBody2D()
+    {
+        for (int i = 0; i < childs.Count; i++)
+        {
+            float childX = Mathf.Round(childs[i].position.x * 2f) * 0.5f;
+            float childY = Mathf.Round(childs[i].position.y * 2f) * 0.5f;
+            if (childX == Mathf.Round(childX)) childX += 0.5f;
+            childs[i].position = new Vector3(childX, childY, childs[i].position.z);
+        }
+        gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+    }
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         hitGround = true;
@@ -72,5 +94,5 @@ public class FallingBlock : MonoBehaviour
     {
         Debug.Log("Exited");
         stillColliding = false;
-    }
+    }*/
 }

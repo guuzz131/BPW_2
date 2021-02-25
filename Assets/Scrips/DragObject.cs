@@ -81,6 +81,7 @@ public class DragObject : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
         {
                 if (points[i].transform.childCount == 0)
                 {
+                    Debug.Log(points[i + 1].transform.GetChild(0).gameObject);
                     GameObject child = points[i + 1].transform.GetChild(0).gameObject;
                     child.transform.SetParent(points[i].transform);
                     child.GetComponent<RectTransform>().anchoredPosition = points[i].GetComponent<RectTransform>().anchoredPosition;
@@ -101,17 +102,25 @@ public class DragObject : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     }
     void DestroyThis()
     {
-        
+        points[0].transform.GetChild(0).gameObject.SetActive(false);
+        points[0].transform.GetChild(0).SetParent(canvas.gameObject.transform);
         for (int i = 0; i < objects.Count; i++)
         {
-            if (points[i].transform.childCount == 0)
+
+            objects[i].GetComponent<DragObject>().objects.Remove(gameObject);
+            if ((points[i].transform.childCount == 0 || i == 0))
             {
+                Debug.Log(i);
+                if (i == objects.Count)
+                {
+                    return;
+                }
                 GameObject child = points[i + 1].transform.GetChild(0).gameObject;
                 child.transform.SetParent(points[i].transform);
                 child.GetComponent<RectTransform>().anchoredPosition = points[i].GetComponent<RectTransform>().anchoredPosition;
             }
-            objects[i].GetComponent<DragObject>().objects.Remove(gameObject);
+            
         }
-        Destroy(gameObject);
+        
     }
 }
