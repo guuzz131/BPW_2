@@ -28,9 +28,10 @@ public class PlayerCtrl : MonoBehaviour
     int i = 1;
     float legsPos;
     float time1;
-    bool hasPlayer;
-    bool canSpawn;
+    bool hasPlayer = false;
+    bool canSpawn = true;
     bool isPlaying1;
+    bool justStarted = true;
 
     bool crouched;
     List<GameObject> dissolvingObjects = new List<GameObject>();
@@ -39,7 +40,6 @@ public class PlayerCtrl : MonoBehaviour
     void Start()
     {
         Destroy(gameObject.transform.GetChild(0).gameObject);
-        newBlock();
         t = transform;
 
         facingRight = t.localScale.x > 0;
@@ -71,6 +71,7 @@ public class PlayerCtrl : MonoBehaviour
             }
             dissolvingObjects.Clear();
         }
+        
         if (r2d != null && hasPlayer)
         {
             if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
@@ -125,7 +126,7 @@ public class PlayerCtrl : MonoBehaviour
                         if (i == 3)
                         {
                             Destroy(gameObject.transform.GetChild(0).gameObject);
-                            GameObject.Find("MainCamera").GetComponent<CameraFollow>().moveCam = true;
+                            GameObject.Find("Cameras").GetComponent<CameraFollow>().moveCam = true;
                             hasPlayer = false;
                             Invoke("timer", 1f);
                         }
@@ -156,12 +157,22 @@ public class PlayerCtrl : MonoBehaviour
                 crouched = false;
             }
         }
-        if (Input.GetKeyDown(KeyCode.E) && !hasPlayer && GameObject.Find("MainCamera").GetComponent<CameraFollow>().camHasArrived && canSpawn)
+        if (Input.GetKeyDown(KeyCode.E) && !hasPlayer && GameObject.Find("Cameras").GetComponent<CameraFollow>().camHasArrived && canSpawn)
         {
-            GameObject.Find("MainCamera").GetComponent<CameraFollow>().moveCam = false;
-            GameObject.Find("MainCamera").GetComponent<CameraFollow>().camHasArrived = false;
+            GameObject.Find("Cameras").GetComponent<CameraFollow>().moveCam = false;
+            GameObject.Find("Cameras").GetComponent<CameraFollow>().camHasArrived = false;
             newBlock();
             canSpawn = false;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && justStarted && !hasPlayer && canSpawn)
+        {
+
+            GameObject.Find("Cameras").GetComponent<CameraFollow>().moveCam = false;
+            GameObject.Find("Cameras").GetComponent<CameraFollow>().camHasArrived = false;
+            newBlock();
+            canSpawn = false;
+
+            justStarted = false;
         }
     }
         
