@@ -9843,7 +9843,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 2494648ab3d7c5c4f887ac90d6788bb4, type: 2}
+  sharedProfile: {fileID: 0}
 --- !u!114 &31679384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10242,8 +10242,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: PLAY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
+  m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10267,7 +10267,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 118.45
+  m_fontSize: 130
   m_fontSizeBase: 78.92
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11209,8 +11209,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: EXIT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
+  m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11234,7 +11234,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 118.45
+  m_fontSize: 130
   m_fontSizeBase: 78.92
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -19814,6 +19814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1249738326}
   - component: {fileID: 1249738327}
+  - component: {fileID: 1249738328}
   m_Layer: 0
   m_Name: Global Volume
   m_TagString: Untagged
@@ -19851,7 +19852,21 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 2494648ab3d7c5c4f887ac90d6788bb4, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 788f0aa995ddf574db2c7584f9f5eebf, type: 2}
+--- !u!114 &1249738328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249738325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a0cca96ba6ac1a4480f170ea51ca94c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 0}
+  speed: 25
 --- !u!1 &1280225449
 GameObject:
   m_ObjectHideFlags: 0

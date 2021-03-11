@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    // Move player in 2D space
     public float maxSpeed = 3.4f;
     public float jumpHeight = 6.5f;
     public float gravityScale = 1.5f;
@@ -20,6 +19,7 @@ public class PlayerCtrl : MonoBehaviour
     public bool isDissolving;
     public float dissolve;
     public Canvas canvas;
+    public Canvas tutorialCanvas;
 
     bool facingRight = true;
     float moveDirection = 0;
@@ -81,11 +81,8 @@ public class PlayerCtrl : MonoBehaviour
             }
             else
             {
-                if (isGrounded || r2d.velocity.magnitude < 0.01f || objectIsGrounded)
-                {
-                    //standing still
-                    moveDirection = 0;
-                }
+                
+                moveDirection = 0;
                 
             }
             // Change facing direction
@@ -110,18 +107,24 @@ public class PlayerCtrl : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 
-                    GameObject newBrickBlock = Instantiate(new GameObject("Block"), this.transform.position, Quaternion.Euler(0, 0, 0), GameCtrl.transform);
-                    newBrickBlock.AddComponent<Rigidbody2D>();
-                    newBrickBlock.GetComponent<Rigidbody2D>().freezeRotation = true;
+                GameObject newBrickBlock = Instantiate(new GameObject("Block"), this.transform.position, Quaternion.Euler(0, 0, 0), GameCtrl.transform);
+                newBrickBlock.AddComponent<Rigidbody2D>();
+                newBrickBlock.GetComponent<Rigidbody2D>().freezeRotation = true;
+                newBrickBlock.AddComponent<CompositeCollider2D>();
+                newBrickBlock.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+                newBrickBlock.tag = "WasPlayer";
+                newBrickBlock.layer = 9;
+                newBrickBlock.AddComponent<FallingBlock>();
 
-                    newBrickBlock.AddComponent<FallingBlock>();
                     for (int i = 0; i <= 3; i++)
                     {
                         GameObject brick = this.gameObject.transform.GetChild(0).GetChild(i).gameObject;
                         GameObject newBrick = Instantiate(brick, brick.transform.position, Quaternion.Euler(0, 0, 0), newBrickBlock.transform);
                         isDissolving = true;
                         newBrick.AddComponent<BoxCollider2D>();
+                        newBrick.GetComponent<BoxCollider2D>().usedByComposite = true;
                         newBrick.layer = 9;
+                        newBrick.tag = "WasPlayer";
                         dissolvingObjects.Add(newBrick);
                         if (i == 3)
                         {
@@ -166,7 +169,10 @@ public class PlayerCtrl : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E) && justStarted && !hasPlayer && canSpawn)
         {
-
+            if (tutorialCanvas != null)
+            {
+                tutorialCanvas.GetComponent<Tutorial>().StartTut5();
+            }
             GameObject.Find("Cameras").GetComponent<CameraFollow>().moveCam = false;
             GameObject.Find("Cameras").GetComponent<CameraFollow>().camHasArrived = false;
             newBlock();
@@ -184,11 +190,12 @@ public class PlayerCtrl : MonoBehaviour
             if (!objectIsGrounded)
             {
                 r2d.velocity = new Vector2((moveDirection) * maxSpeed, r2d.velocity.y);
-            }
-            else
+            
+            }else
             {
-                r2d.velocity = new Vector2((moveDirection) * maxSpeed/2, r2d.velocity.y);
+                r2d.velocity = new Vector2((moveDirection) * maxSpeed / 2, r2d.velocity.y);
             }
+            
 
         }
 

@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 1499237905388191754}
   - component: {fileID: 1499237905388191796}
   - component: {fileID: 1499237905388191797}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1499237906260664004}
   - component: {fileID: 1499237906260664007}
-  m_Layer: 0
+  - component: {fileID: 92908135}
+  m_Layer: 5
   m_Name: UI 4-1Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +175,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1499237906260664005}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -203,7 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
-  spawnEntity: {fileID: 0}
+  spawnEntity: {fileID: 3441885436717465342, guid: dbd3b669d907aeb4084f5540df2df893, type: 3}
   points:
   - {fileID: 0}
   - {fileID: 0}
@@ -215,6 +216,22 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!111 &92908135
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499237906260664005}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 6147ec40be1ef704ebea02427cdbc590, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 6147ec40be1ef704ebea02427cdbc590, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1833537220889331350
 GameObject:
   m_ObjectHideFlags: 0

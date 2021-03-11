@@ -1,0 +1,4 @@
+lasers die blokjes van de player halen
+Roteren voordat je ze inspawned
+hard difficulty waarbij je de volgorde alleen op hetbegin kan aanpassen
+Tetris blokken die een rij weghalen als ze door de player verbind worden

@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Metaball_liquid
-  - SlimeBall
-  - Unbreakable
+  - WasPlayer
+  - GreenBlock
   layers:
   - Default
   - TransparentFX

@@ -110,7 +110,6 @@ public class DragObject : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
             objects[i].GetComponent<DragObject>().objects.Remove(gameObject);
             if ((points[i].transform.childCount == 0 || i == 0))
             {
-                Debug.Log(i);
                 if (i == objects.Count)
                 {
                     return;

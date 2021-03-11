@@ -160,6 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3780210913966225548}
   - component: {fileID: 3780210913966225549}
+  - component: {fileID: 1684529899}
   m_Layer: 5
   m_Name: UI 3-2StairBrick
   m_TagString: Untagged
@@ -203,7 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
-  spawnEntity: {fileID: 0}
+  spawnEntity: {fileID: 5543175034439202716, guid: 218c0873e86cee043a7dc6030c95a1aa, type: 3}
   points:
   - {fileID: 0}
   - {fileID: 0}
@@ -215,6 +216,22 @@ MonoBehaviour:
   - {fileID: 3780210913966225551}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!111 &1684529899
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3780210913966225551}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 6147ec40be1ef704ebea02427cdbc590, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 6147ec40be1ef704ebea02427cdbc590, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &8141419709640183295
 GameObject:
   m_ObjectHideFlags: 0

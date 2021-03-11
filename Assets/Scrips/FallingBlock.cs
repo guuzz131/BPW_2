@@ -5,6 +5,7 @@ using UnityEngine;
 public class FallingBlock : MonoBehaviour
 {
     public bool hitGround = false;
+    public List<GameObject> neighbours = new List<GameObject>();
 
     private List<Transform> childs = new List<Transform>();
     private Material grayMat;
@@ -69,30 +70,39 @@ public class FallingBlock : MonoBehaviour
         }
         gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
     }
-    /*
+
     private void OnCollisionEnter2D(Collision2D collision)
-    {
-        hitGround = true;
-        stillColliding = true;
-        if (collision.gameObject.layer == 9 && (collision.GetContact(0).point.y < yMax) && (collision.GetContact(0).point.x < xMax + .5f) && (collision.GetContact(0).point.x > xMin - .5f))
+    { 
+        if (collision.gameObject.tag == "WasPlayer")
         {
-            for (int i = 0; i < childs.Count; i++)
-            {
-                float childX = Mathf.Round(childs[i].position.x * 2f) *0.5f;
-                float childY = Mathf.Round(childs[i].position.y * 2f) * 0.5f;
-                if (childX == Mathf.Round(childX)) childX += 0.5f;
-                childs[i].position = new Vector3(childX, childY, childs[i].position.z);
-            }
-            if (stillColliding)
-            {
-                Destroy(gameObject.GetComponent<Rigidbody2D>());
-            }
-                
+            neighbours.Add(collision.gameObject);
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        Debug.Log("Exited");
-        stillColliding = false;
-    }*/
-}
+
+        /*
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            hitGround = true;
+            stillColliding = true;
+            if (collision.gameObject.layer == 9 && (collision.GetContact(0).point.y < yMax) && (collision.GetContact(0).point.x < xMax + .5f) && (collision.GetContact(0).point.x > xMin - .5f))
+            {
+                for (int i = 0; i < childs.Count; i++)
+                {
+                    float childX = Mathf.Round(childs[i].position.x * 2f) *0.5f;
+                    float childY = Mathf.Round(childs[i].position.y * 2f) * 0.5f;
+                    if (childX == Mathf.Round(childX)) childX += 0.5f;
+                    childs[i].position = new Vector3(childX, childY, childs[i].position.z);
+                }
+                if (stillColliding)
+                {
+                    Destroy(gameObject.GetComponent<Rigidbody2D>());
+                }
+
+            }
+        }
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            Debug.Log("Exited");
+            stillColliding = false;
+        }*/
+    }
